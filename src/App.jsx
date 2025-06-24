@@ -1,14 +1,17 @@
 import React from 'react'
-import {RouterProvider} from 'react-router-dom'
-import { Routes } from 'react-router-dom'
-import './App.css'
-// import routes from './routes/Routes'
-import Register from './components/user/Register'
+import { RouterProvider, Routes } from 'react-router-dom'
+
+import "./App.css"
+import { Toaster } from 'react-hot-toast'
+import routes from './routes/Routes'
+ 
 const App = () => {
   return (
     <div>
-      {/* <RouterProvider router={routes}></RouterProvider> */}
-      <Register></Register>
+      <Toaster></Toaster>
+      <RouterProvider router={routes}></RouterProvider>
+      {/* <Register></Register> */}
+      
     </div>
   )
 }

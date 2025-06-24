@@ -1,14 +1,15 @@
-import React, { useState } from 'react'
-import { CgNametag } from "react-icons/cg";
-import { CgRename } from "react-icons/cg";
-import { MdAlternateEmail } from "react-icons/md";
-import { RiLockPasswordLine } from "react-icons/ri";
-import { MdEventRepeat } from "react-icons/md";
-import {validatePassword} from "val-pass"
+import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { CgNametag, CgRename } from "react-icons/cg";
+import { MdAlternateEmail, MdEventRepeat } from "react-icons/md";
+import { RiLockPasswordLine } from "react-icons/ri";
+import { useNavigate } from 'react-router-dom';
+import { validatePassword } from "val-pass";
+import empServices from '../../service/empService';
 
 
 const Register = () => {
+    const navigate=useNavigate()
   const [formData,setFormData]=useState({
     userName:"",
     password:"",
@@ -34,20 +35,32 @@ const Register = () => {
     e.preventDefault()
     let {name,userName,password,email}=formData
     if(!name||!userName||!password||!email){
-      toast.error("All feilds are mandatory")
-      return
+      toast.error("All fields are mandatory")
+      return;
     }
     let {validateAll,getAllValidationErrorMessage}=validatePassword(password)
     if(!validateAll()){
       toast.error(`${getAllValidationErrorMessage()}`)
     }
     if(!matched){
-      toast.error("passsword and confirm password did not match")
-  return
+      toast.error("Password and confirm password did not match")
+  return;
+    };
+(async()=>{
+  let data=await empServices.regiUser(formData)
+  try{
+    if(data.status==201){
+      toast.success("Registration is Successfully")
+      navigate("/")
+    }else{
+      toast.error("something went wrong")
     }
- console.log(formData);
- 
-   
+  }catch(error){
+    toast.error("something went wrong")
+
+  }
+})()
+
   }
 
   const handelCheckPassword=(e)=>{
